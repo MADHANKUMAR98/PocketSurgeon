@@ -1,98 +1,233 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
+// app/(tabs)/index.tsx
+import React from 'react';
+import { 
+  View, 
+  Text, 
+  ScrollView, 
+  TouchableOpacity, 
+  StyleSheet
+} from 'react-native';
 import { Link } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+
+const COLORS = {
+  primary: '#2563EB',
+  secondary: '#7C3AED', 
+  accent: '#059669',
+  background: '#F8FAFC',
+  card: '#FFFFFF',
+  text: '#1E293B',
+  textSecondary: '#64748B',
+  white: '#FFFFFF',
+};
+
+const teethData = [
+  {
+    id: 1, name: "Maxillary Incisor", slug: "maxillary-incisor", icon: "🦷",
+    description: "Anterior Extraction", color: COLORS.primary
+  },
+  {
+    id: 2, name: "Maxillary Canine", slug: "maxillary-canine", icon: "🐕",
+    description: "Canine Extraction", color: COLORS.secondary
+  },
+  {
+    id: 3, name: "Maxillary Premolar", slug: "maxillary-premolar", icon: "⚡",
+    description: "Premolar Procedure", color: COLORS.accent
+  },
+  {
+    id: 4, name: "Maxillary Molar", slug: "maxillary-molar", icon: "🦴",
+    description: "Molar Extraction", color: COLORS.primary
+  },
+  {
+    id: 5, name: "Mandibular Incisor", slug: "mandibular-incisor", icon: "🦷",
+    description: "Anterior Extraction", color: COLORS.secondary
+  },
+  {
+    id: 6, name: "Mandibular Canine", slug: "mandibular-canine", icon: "🐕",
+    description: "Canine Extraction", color: COLORS.accent
+  },
+  {
+    id: 7, name: "Mandibular Premolar", slug: "mandibular-premolar", icon: "⚡",
+    description: "Premolar Procedure", color: COLORS.primary
+  },
+  {
+    id: 8, name: "Mandibular Molar", slug: "mandibular-molar", icon: "🦴",
+    description: "Molar Extraction", color: COLORS.secondary
+  }
+];
 
 export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <View style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>
+        <View style={styles.headerContent}>
+          <View>
+            <Text style={styles.appTitle}>🦷 Pocket Surgeon</Text>
+            <Text style={styles.appSubtitle}>Dental Extraction Guide</Text>
+          </View>
+          <View style={styles.stats}>
+            <Text style={styles.statNumber}>8</Text>
+            <Text style={styles.statLabel}>Teeth</Text>
+          </View>
+        </View>
+      </View>
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      {/* Main Content */}
+      <ScrollView 
+        style={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Welcome Card */}
+        <View style={styles.welcomeCard}>
+          <Ionicons name="medical-outline" size={32} color={COLORS.primary} />
+          <Text style={styles.welcomeTitle}>Welcome, Doctor!</Text>
+          <Text style={styles.welcomeText}>
+            Comprehensive dental extraction techniques and procedures.
+          </Text>
+        </View>
+
+        {/* Teeth Grid - Simple & Responsive */}
+        <View style={styles.gridSection}>
+          <Text style={styles.sectionTitle}>Extraction Procedures</Text>
+          <View style={styles.grid}>
+            {teethData.map((tooth) => (
+              <Link key={tooth.id} href={`/tooth-details/${tooth.slug}`} asChild>
+                <TouchableOpacity style={styles.toothCard}>
+                  <Text style={styles.cardIcon}>{tooth.icon}</Text>
+                  <Text style={styles.cardTitle}>{tooth.name}</Text>
+                  <Text style={styles.cardDescription}>{tooth.description}</Text>
+                  <View style={styles.cardFooter}>
+                    <Text style={styles.viewText}>View Details</Text>
+                    <Ionicons name="chevron-forward" size={16} color={COLORS.primary} />
+                  </View>
+                </TouchableOpacity>
+              </Link>
+            ))}
+          </View>
+        </View>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.background,
   },
-  stepContainer: {
-    gap: 8,
+  header: {
+    backgroundColor: COLORS.primary,
+    paddingTop: 60,
+    paddingBottom: 30,
+    paddingHorizontal: 20,
+  },
+  headerContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  appTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: COLORS.white,
+    marginBottom: 4,
+  },
+  appSubtitle: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.8)',
+  },
+  stats: {
+    alignItems: 'center',
+  },
+  statNumber: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: COLORS.white,
+  },
+  statLabel: {
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.8)',
+    marginTop: 2,
+  },
+  content: {
+    flex: 1,
+  },
+  welcomeCard: {
+    backgroundColor: COLORS.card,
+    margin: 20,
+    padding: 20,
+    borderRadius: 16,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 4,
+  },
+  welcomeTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: COLORS.text,
+    marginTop: 12,
     marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  welcomeText: {
+    fontSize: 16,
+    color: COLORS.textSecondary,
+    textAlign: 'center',
+    lineHeight: 22,
+  },
+  gridSection: {
+    paddingHorizontal: 20,
+    marginBottom: 30,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: COLORS.text,
+    marginBottom: 16,
+  },
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  toothCard: {
+    width: '48%', // This automatically adapts to screen size
+    backgroundColor: COLORS.card,
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  cardIcon: {
+    fontSize: 24,
+    marginBottom: 12,
+  },
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: COLORS.text,
+    marginBottom: 4,
+  },
+  cardDescription: {
+    fontSize: 14,
+    color: COLORS.textSecondary,
+    marginBottom: 12,
+  },
+  cardFooter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  viewText: {
+    fontSize: 14,
+    color: COLORS.primary,
+    fontWeight: '600',
   },
 });
