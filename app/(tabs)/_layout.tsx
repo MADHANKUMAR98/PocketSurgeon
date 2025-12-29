@@ -7,11 +7,25 @@ import { Animated, StyleSheet, View } from 'react-native';
 
 SplashScreen.preventAutoHideAsync();
 
+// Track if splash has been shown to prevent showing it again on navigation
+let splashShown = false;
+
 export default function TabLayout() {
-  const [showSplash, setShowSplash] = useState(true);
+  const [showSplash, setShowSplash] = useState(!splashShown);
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    // Only show splash on first app load, not on navigation
+    if (splashShown) {
+      // If splash was already shown, hide it immediately
+      SplashScreen.hideAsync();
+      setShowSplash(false);
+      return;
+    }
+
+    // Mark as shown immediately to prevent showing on remount
+    splashShown = true;
+
     Animated.sequence([
       Animated.timing(fadeAnim, {
         toValue: 1,
@@ -30,7 +44,7 @@ export default function TabLayout() {
     });
   }, []);
 
-  // ⭐ SPLASH SCREEN UI
+  // ⭐ SPLASH SCREEN UI - Only show on first load
   if (showSplash) {
     return (
       <View style={styles.splashContainer}>
