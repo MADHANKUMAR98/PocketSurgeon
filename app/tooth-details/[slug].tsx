@@ -3,10 +3,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  Alert,
+  Dimensions,
   Image,
   ImageSourcePropType,
-  Linking,
   Modal,
   Pressable,
   ScrollView,
@@ -15,10 +14,13 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+import VideoPlayer from '../VideoPlayer';
+
+const { width } = Dimensions.get('window');
 
 const COLORS = {
   primary: '#2563EB',
-  secondary: '#7C3AED', 
+  secondary: '#7C3AED',
   accent: '#059669',
   background: '#F8FAFC',
   card: '#FFFFFF',
@@ -33,6 +35,7 @@ const teethData = {
   'maxillary-incisor': {
     name: "Maxillary Incisor",
     type: "MAXILLARY",
+    heroImage: require('../../assets/images/teeth_assets/maxillary-incisor.png'),
     anesthetic: {
       buccal: "Supraorbital or Supra-periosteal nerve block",
       palatal: "Naso-Palatine nerve block"
@@ -41,14 +44,12 @@ const teethData = {
       "Upper straight incisor forceps (narrow beaks)"
     ],
     motion: "Rotational motion",
-    videos: {
-      surgical: "https://drive.google.com/file/d/1gZRwFMShfAI0-QmBg6KZEi7OFQKPEABH/view?usp=sharing",
-      anesthetic: "anesthetic_video_1"
-    }
+    videoUrl: "https://drive.google.com/file/d/1OMLSWV6rsMyNYmtzSVHSEzeP2etRO_mN/view?usp=sharing"
   },
   'maxillary-canine': {
-    name: "Maxillary Canine", 
+    name: "Maxillary Canine",
     type: "MAXILLARY",
+    heroImage: require('../../assets/images/teeth_assets/maxillary-canine.png'),
     anesthetic: {
       buccal: "Supraorbital / Supra-periosteal nerve block",
       palatal: "Naso-Palatine nerve block"
@@ -57,14 +58,12 @@ const teethData = {
       "Upper canine forceps (curved, strong beaks)"
     ],
     motion: "Rotational motion",
-    videos: {
-      surgical: "https://drive.google.com/file/d/1jnFb0N2XsVO-nqngFcURAD9988lwTF_p/view?usp=sharing",
-      anesthetic: "anesthetic_video_2" 
-    }
+    videoUrl: "https://drive.google.com/file/d/1xPvHXA1RMboidtAZji2BDdIqKu4Zi3nA/view?usp=sharing"
   },
   'maxillary-premolar': {
     name: "Maxillary Premolar",
     type: "MAXILLARY",
+    heroImage: require('../../assets/images/teeth_assets/maxillary-premolar.png'),
     anesthetic: {
       buccal: "Middle Superior Alveolar (MSA) nerve block",
       palatal: "Greater Palatine nerve block"
@@ -72,15 +71,13 @@ const teethData = {
     forceps: [
       "Upper premolar forceps (universal upper forceps)"
     ],
-    motion: "Rotational motion", 
-    videos: {
-      surgical: "https://drive.google.com/file/d/1Jb1duy3lJccxC9n5lxI1C0zFcLmkYj9v/view?usp=sharing",
-      anesthetic: "anesthetic_video_3"
-    }
+    motion: "Rotational motion",
+    videoUrl: "https://drive.google.com/file/d/1wUVoo4DYvsuo4U3qmyDzROOdtlAaTAoe/view?usp=sharing"
   },
   'maxillary-molar': {
     name: "Maxillary Molar",
-    type: "MAXILLARY", 
+    type: "MAXILLARY",
+    heroImage: require('../../assets/images/teeth_assets/maxillary-molar.png'),
     anesthetic: {
       buccal: "Posterior Superior Alveolar (PSA) nerve block",
       palatal: "Greater Palatine nerve block"
@@ -90,48 +87,42 @@ const teethData = {
       "Left maxillary molar forceps (anatomical beak differentiation)"
     ],
     motion: "Bucco-Palatal movement",
-    videos: {
-      surgical: "https://drive.google.com/file/d/1YhJ-1tPfuhn0Qbo5LmLTZaTU7_qGO7qa/view?usp=sharing",
-      anesthetic: "anesthetic_video_4"
-    }
+    videoUrl: "https://drive.google.com/file/d/1MqAwsSiHIj6b_omBzRBc4Q-43osPclJs/view?usp=sharing"
   },
 
   // MANDIBULAR TEETH
   'mandibular-incisor': {
     name: "Mandibular Incisor",
     type: "MANDIBULAR",
+    heroImage: require('../../assets/images/teeth_assets/mandibular-incisor.png'),
     anesthetic: {
-      buccal: "Inferior Alveolar Nerve (IAN) block", 
+      buccal: "Inferior Alveolar Nerve (IAN) block",
       palatal: ""
     },
     forceps: [
       "Lower incisor forceps (thin, narrow beak)"
     ],
     motion: "Rotational motion",
-    videos: {
-      surgical: "https://drive.google.com/file/d/1v8jY9HRRUYzWr_RybhZVl_Div8QMAA5q/view?usp=sharing",
-      anesthetic: "anesthetic_video_5"
-    }
+    videoUrl: "https://drive.google.com/file/d/1Do1qMWuQUXPJXJian-dxti4iLVCikJc2/view?usp=sharing"
   },
   'mandibular-canine': {
     name: "Mandibular Canine",
-    type: "MANDIBULAR", 
+    type: "MANDIBULAR",
+    heroImage: require('../../assets/images/teeth_assets/mandibular-canine.jpg'),
     anesthetic: {
       buccal: "Inferior Alveolar Nerve block",
       palatal: ""
     },
     forceps: [
-      "Lower canine forceps (curved beaks)" 
+      "Lower canine forceps (curved beaks)"
     ],
     motion: "Rotational motion",
-    videos: {
-      surgical: undefined,
-      anesthetic: "anesthetic_video_6"
-    }
+    videoUrl: "https://drive.google.com/file/d/1Vd-eW5yR2GlEnf7ZjpwA1JR_EzVugCmt/view?usp=sharing"
   },
   'mandibular-premolar': {
-    name: "Mandibular Premolar", 
+    name: "Mandibular Premolar",
     type: "MANDIBULAR",
+    heroImage: require('../../assets/images/teeth_assets/mandibular-premolar.png'),
     anesthetic: {
       buccal: "Inferior Alveolar Nerve block",
       palatal: ""
@@ -140,26 +131,21 @@ const teethData = {
       "Lower premolar forceps (slightly curved, narrow beak)"
     ],
     motion: "Rotational motion",
-    videos: {
-      surgical: "https://drive.google.com/file/d/1lZxMxqAtCIDM2kSdpNe60UXZUb6C3bYc/view?usp=sharing",
-      anesthetic: "anesthetic_video_7"
-    }
+    videoUrl: "https://drive.google.com/file/d/1F7rTXFFZlU7I14M4HPYJ7HQvY5sGLHSq/view?usp=sharing"
   },
   'mandibular-molar': {
     name: "Mandibular Molar",
     type: "MANDIBULAR",
+    heroImage: require('../../assets/images/teeth_assets/mandibular-molar.png'),
     anesthetic: {
       buccal: "Inferior Alveolar Nerve block",
       palatal: "Long Buccal Nerve block"
     },
     forceps: [
-      "Lower molar forceps (anatomical beaks for bifurcation)" 
+      "Lower molar forceps (anatomical beaks for bifurcation)"
     ],
     motion: "Buccal Traction Movement",
-    videos: {
-      surgical: undefined,
-      anesthetic: "anesthetic_video_8"
-    }
+    videoUrl: "https://drive.google.com/file/d/1Cxg2qBW1RGBjQmTXMRTY24_UlaL5D6sn/view?usp=sharing"
   }
 };
 
@@ -259,49 +245,29 @@ export default function ToothDetailScreen() {
   const tooth = teethData[slug as keyof typeof teethData];
   const [previewImage, setPreviewImage] = useState<ForcepsImage | null>(null);
 
-  // Function to open video URL
-  const openVideo = async (url: string | undefined) => {
-    if (!url) {
-      Alert.alert('Video Unavailable', 'The surgical video is not available at this time.');
-      return;
-    }
-
-    try {
-      const supported = await Linking.canOpenURL(url);
-      if (supported) {
-        await Linking.openURL(url);
-      } else {
-        Alert.alert(
-          'Cannot Open Link',
-          'This link cannot be opened on your device. Please ensure you have a compatible app installed.'
-        );
-      }
-    } catch (error) {
-      Alert.alert('Error', 'Unable to open the video link. Please try again later.');
-    }
-  };
 
   if (!tooth) {
     return (
-      <View style={styles.container}>
+      <View style={styles.section}>
         <Text>Tooth not found</Text>
         <Link href="/" asChild>
-          <TouchableOpacity style={styles.backButton}>
-            <Text style={styles.backButtonText}>← Back to Procedures</Text>
-          </TouchableOpacity>
+          <Ionicons name="videocam" size={24} color={COLORS.primary} />
+          <Text style={styles.sectionTitle}>Surgical Video</Text>
         </Link>
       </View>
+
+
     );
   }
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ 
+      <Stack.Screen options={{
         title: tooth.name,
         headerStyle: { backgroundColor: COLORS.primary },
         headerTintColor: COLORS.white
       }} />
-      
+
       {/* Image Preview Modal */}
       <Modal
         transparent
@@ -311,8 +277,8 @@ export default function ToothDetailScreen() {
         accessibilityViewIsModal
         accessibilityLabel="Image preview"
       >
-        <Pressable 
-          style={styles.previewOverlay} 
+        <Pressable
+          style={styles.previewOverlay}
           onPress={() => setPreviewImage(null)}
           accessibilityLabel="Close image preview"
         >
@@ -339,7 +305,7 @@ export default function ToothDetailScreen() {
           </View>
         </Pressable>
       </Modal>
-      
+
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerContent}>
@@ -352,14 +318,25 @@ export default function ToothDetailScreen() {
 
       {/* Content */}
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        
+
+        {/* Hero Image */}
+        {tooth.heroImage && (
+          <View style={styles.heroContainer}>
+            <Image
+              source={tooth.heroImage}
+              style={styles.heroImage}
+              resizeMode="cover"
+            />
+          </View>
+        )}
+
         {/* 1. Local Anesthetic Technique */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Ionicons name="bandage" size={24} color={COLORS.primary} />
             <Text style={styles.sectionTitle}>Local Anesthetic Technique</Text>
           </View>
-          
+
           <View style={styles.card}>
             <View style={styles.anestheticRow}>
               <View style={styles.labelContainer}>
@@ -368,7 +345,7 @@ export default function ToothDetailScreen() {
               </View>
               <Text style={styles.value}>{tooth.anesthetic.buccal}</Text>
             </View>
-            
+
             {tooth.anesthetic.palatal && (
               <View style={styles.anestheticRow}>
                 <View style={styles.labelContainer}>
@@ -387,7 +364,7 @@ export default function ToothDetailScreen() {
             <Ionicons name="hammer" size={24} color={COLORS.primary} />
             <Text style={styles.sectionTitle}>Forceps Used</Text>
           </View>
-          
+
           <View style={styles.card}>
             {tooth.forceps.map((forcep, index) => (
               <View key={index} style={styles.forcepsItem}>
@@ -395,7 +372,7 @@ export default function ToothDetailScreen() {
                 <Text style={styles.forcepsText}>{forcep}</Text>
               </View>
             ))}
-            
+
             {/* Forceps Images */}
             {(forcepsImages[slug as string] ?? []).length > 0 && (
               <View style={styles.imagesContainer}>
@@ -408,9 +385,9 @@ export default function ToothDetailScreen() {
                     accessibilityLabel={`View ${img.label}`}
                     accessibilityRole="button"
                   >
-                    <Image 
-                      source={img.src} 
-                      style={styles.forcepsImage} 
+                    <Image
+                      source={img.src}
+                      style={styles.forcepsImage}
                       resizeMode="cover"
                       accessibilityLabel={img.label}
                     />
@@ -431,7 +408,7 @@ export default function ToothDetailScreen() {
             <Ionicons name="move" size={24} color={COLORS.primary} />
             <Text style={styles.sectionTitle}>Motion for Extraction</Text>
           </View>
-          
+
           <View style={styles.motionCard}>
             <View style={styles.motionIcon}>
               <Ionicons name="sync" size={32} color={COLORS.primary} />
@@ -443,41 +420,29 @@ export default function ToothDetailScreen() {
           </View>
         </View>
 
-        {/* 4. Procedure Videos */}
+        {/* 4. Surgical Video Only */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Ionicons name="videocam" size={24} color={COLORS.primary} />
-            <Text style={styles.sectionTitle}>Procedure Videos</Text>
+            <Text style={styles.sectionTitle}>Surgical Video</Text>
           </View>
-          
-          <View style={styles.card}>
-            {/* Surgical Video */}
-            <TouchableOpacity 
-              style={styles.videoButton}
-              onPress={() => openVideo(tooth.videos.surgical)}
-            >
-              <View style={styles.videoIcon}>
-                <Ionicons name="play-circle" size={28} color={COLORS.primary} />
-              </View>
-              <View style={styles.videoInfo}>
-                <Text style={styles.videoTitle}>Surgical Video</Text>
-                <Text style={styles.videoDescription}>Step-by-step extraction procedure</Text>
-              </View>
-              <Ionicons name="play" size={20} color={COLORS.primary} />
-            </TouchableOpacity>
-
-            {/* Anesthetic Video */}
-            <TouchableOpacity style={styles.videoButton}>
-              <View style={styles.videoIcon}>
-                <Ionicons name="medkit" size={28} color={COLORS.secondary} />
-              </View>
-              <View style={styles.videoInfo}>
-                <Text style={styles.videoTitle}>Anesthetic Video</Text>
-                <Text style={styles.videoDescription}>Nerve block technique demonstration</Text>
-              </View>
-              <Ionicons name="play" size={20} color={COLORS.secondary} />
-            </TouchableOpacity>
-          </View>
+          {tooth.videoUrl ? (
+            <VideoPlayer
+              url={tooth.videoUrl}
+              title={`${tooth.name} Extraction`}
+              description="Step-by-step surgical procedure"
+              height={240}
+              showControls={true}
+            />
+          ) : (
+            <View style={styles.noVideoCard}>
+              <Ionicons name="videocam-off" size={48} color={COLORS.textSecondary} />
+              <Text style={styles.noVideoTitle}>Video Not Available</Text>
+              <Text style={styles.noVideoText}>
+                Surgical video for this tooth is coming soon
+              </Text>
+            </View>
+          )}
         </View>
 
         {/* Back Button */}
@@ -501,6 +466,26 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     padding: 20,
     paddingTop: 60,
+  },
+  noVideoCard: {
+    backgroundColor: COLORS.card,
+    borderRadius: 16,
+    padding: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  noVideoTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: COLORS.text,
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  noVideoText: {
+    fontSize: 14,
+    color: COLORS.textSecondary,
+    textAlign: 'center',
+    lineHeight: 20,
   },
   headerContent: {
     flexDirection: 'row',
@@ -689,9 +674,9 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   motionValue: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: COLORS.primary,
+    // fontSize: 24,openVideo 
+    // fontWeight: 'bold',
+    // color: COLORS.primary,
   },
   videoButton: {
     flexDirection: 'row',
@@ -699,7 +684,6 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: COLORS.background,
     borderRadius: 12,
-    marginBottom: 12,
     gap: 12,
   },
   videoIcon: {
@@ -733,5 +717,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: COLORS.white,
+  },
+  heroContainer: {
+    marginBottom: 24,
+    borderRadius: 16,
+    overflow: 'hidden',
+    height: 200,
+    backgroundColor: COLORS.card,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 5,
+  },
+  heroImage: {
+    width: '100%',
+    height: '100%',
   },
 });
