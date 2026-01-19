@@ -1,50 +1,106 @@
-# Welcome to your Expo app 👋
+# 🦷 PocketSurgeon
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<div align="center">
 
-## Get started
+[![Expo](https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white)](https://expo.dev)
+[![React Native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactnative.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS-orange?style=for-the-badge)](https://expo.dev)
 
-1. Install dependencies
+**The ultimate pocket companion for dental professionals and students.**
 
-   ```bash
-   npm install
-   ```
+[Features](#-features) • [Getting Started](#-getting-started) • [Building](#-building-for-production) • [Tech Stack](#-tech-stack)
 
-2. Start the app
+</div>
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## 📖 Overview
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+**PocketSurgeon** is a comprehensive mobile application designed to assist dental surgeons and students with quick, reliable information in the palm of their hands. Whether you need to verify tooth anatomy, review anesthetic techniques, or brush up on elevation principles, PocketSurgeon is your go-to digital assistant.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## ✨ Features
 
-## Get a fresh project
+- **🦷 Detailed Tooth Anatomy**: In-depth specifications and visual guides for every tooth.
+- **💉 Anesthetic Videos**: High-quality video demonstrations for various local anesthesia techniques.
+- **📚 Elevation Principles**: Core concepts and best practices for surgical extractions.
+- **📱 Offline Accessible**: Critical information available whenever and wherever you need it.
+- **🎨 Modern UI/UX**: Built with a clean, intuitive interface for ease of use during procedures.
 
-When you're ready, run:
+## 🚀 Getting Started
 
+Follow these simple steps to get a local copy up and running.
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (LTS recommended)
+- [Expo CLI](https://docs.expo.dev/get-started/installation/)
+
+### Installation
+
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/yourusername/PocketSurgeon.git
+    cd PocketSurgeon
+    ```
+
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
+
+3.  **Start the application**
+    ```bash
+    npx expo start
+    ```
+
+4.  **Run on Device**
+    - Scan the QR code with **Expo Go** (Android) or the Camera app (iOS).
+    - Press `a` for Android Emulator or `i` for iOS Simulator.
+
+## 🛠 Tech Stack
+
+- **Framework**: [Expo](https://expo.dev) & [React Native](https://reactnative.dev)
+- **Language**: [TypeScript](https://www.typescriptlang.org)
+- **Navigation**: [Expo Router](https://docs.expo.dev/router/introduction)
+- **Styling**: Native StyleSheets & Vector Icons
+
+## 📦 Building for Production
+
+This project is configured for **EAS Build**.
+
+### 1. Prerequisites
 ```bash
-npm run reset-project
+npm install -g eas-cli
+eas login
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 2. Build Commands
 
-## Learn more
+| Platform | Command |
+|----------|---------|
+| **Android** | `eas build --platform android --profile production` |
+| **iOS** | `eas build --platform ios --profile production` |
+| **All** | `eas build --platform all --profile production` |
 
-To learn more about developing your project with Expo, look at the following resources:
+> **Note**: For iOS builds, you will need an active Apple Developer Account.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## 🤝 Contributing
 
-## Join the community
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-Join our community of developers creating universal apps.
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+<div align="center">
+  <p>Made with ❤️ by Madhankumar</p>
+</div>
